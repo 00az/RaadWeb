@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Build output: `scripts/build_site.py` writes the hashed site here.
+dist/
+
+# AWS CDK output
+cdk.out/
+cdk.context.json
+
+# AI-DLC runtime files; the shared record lives in the Raad repo.
+/aidlc/
+
+# Local environment files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store

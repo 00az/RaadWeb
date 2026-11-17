@@ -1,0 +1,292 @@
+/*
+ * RAAD landing page (S12).
+ * Colour tokens match RaadMobile's theme (design-system-mapping.md); change them here only.
+ * Logical properties (inline/block) let the Arabic page mirror without a second stylesheet.
+ */
+
+/*
+ * IBM Plex Sans Arabic, self-hosted under the SIL Open Font License 1.1 (fonts/OFL.txt).
+ * Files: @fontsource/ibm-plex-sans-arabic 5.3.0, Arabic and Latin subsets, weights 400 and 600.
+ */
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+    U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+    U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/ibm-plex-sans-arabic-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/ibm-plex-sans-arabic-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #0a0c10;
+  --surface: #12151b;
+  --outline: #6b7487;
+  --text-primary: #f2f4f8;
+  --text-secondary: #aeb6c4;
+  --accent: #5ba8ff;
+  --on-accent: #06121f;
+  --column: 720px;
+  --gutter: 16px;
+  --font: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, "Geeza Pro",
+    "Noto Sans Arabic", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100vh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* One centred column, up to 720 px, with a 16 px side margin on a phone. */
+.site-header,
+main,
+.site-footer {
+  inline-size: 100%;
+  max-inline-size: var(--column);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  inset-block-start: -200px;
+  inset-inline-start: var(--gutter);
+  z-index: 1;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  inset-block-start: var(--gutter);
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 24px 8px;
+}
+
+.brand {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+}
+
+/* The lockup sits on pure black; `screen` merges that black into the page background. */
+.brand-logo {
+  display: block;
+  inline-size: 240px;
+  max-inline-size: 100%;
+  block-size: auto;
+  mix-blend-mode: screen;
+}
+
+.language ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.language a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: 12px;
+  border-radius: 12px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.language a[aria-current="page"] {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+main {
+  flex: 1 0 auto;
+  padding-block: 32px 48px;
+}
+
+main:focus {
+  outline: none;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0 0 16px;
+  max-inline-size: 60ch;
+}
+
+.lead {
+  font-size: 1.125rem;
+}
+
+.notice {
+  padding: 12px 16px;
+  border: 1px solid var(--outline);
+  border-inline-start: 4px solid var(--accent);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.access {
+  margin-block-start: 32px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-inline-size: 100%;
+  min-block-size: 48px;
+  padding: 10px 24px;
+  border: 2px solid transparent; /* shows as a real border in forced-colours mode */
+  border-radius: 24px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.fallback {
+  color: var(--text-secondary);
+}
+
+.contacts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contacts li {
+  margin-block-end: 8px;
+}
+
+/* Addresses read left to right inside the Arabic page and wrap rather than scroll. */
+.address {
+  direction: ltr;
+  unicode-bidi: isolate;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+/* Not-found page: the Arabic section first, then the English one. */
+.not-found + .not-found {
+  margin-block-start: 32px;
+  padding-block-start: 32px;
+  border-block-start: 1px solid var(--surface);
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.site-footer {
+  padding-block: 24px;
+  border-block-start: 1px solid var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* A visible focus ring on every link (accent on the background: 7.9 to 1). */
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .brand-logo {
+    inline-size: 200px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Motion only for people who have not asked to reduce it. */
+@media (prefers-reduced-motion: no-preference) {
+  a {
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
+  }
+}
