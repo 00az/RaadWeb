@@ -1,0 +1,52 @@
+name: raadweb-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+# Every action is pinned to a full commit SHA (its release in the comment) and the CDK CLI to
+# an exact version matching aws-cdk-lib's major in uv.lock; tests/test_workflows.py checks both.
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    env:
+      # Synthetic fixture inputs: no real account, hostname or certificate. No AWS credentials
+      # are configured in this job; synth makes no AWS call.
+      CDK_DEFAULT_ACCOUNT: "111111111111"
+      CDK_DEFAULT_REGION: us-east-1
+      RAADWEB_CERTIFICATE_ARN: arn:aws:acm:us-east-1:111111111111:certificate/00000000-0000-0000-0000-000000000000
+      # A browser that cannot start fails the scan here instead of skipping it.
+      RAADWEB_REQUIRE_BROWSER: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5.4.2
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - run: npm install --global aws-cdk@2.1148.1
+      - run: uv sync --locked --all-groups
+      - run: uv run playwright install --with-deps chromium
+      - run: uv run ruff format --check .
+      - run: uv run ruff check .
+      - run: uv run mypy
+      - name: Tests, browser scan and the 80% line floor for raadweb/ and scripts/
+        run: uv run pytest tests --cov=raadweb --cov=scripts --cov-report=term-missing --cov-fail-under=80
+      - run: uv run python scripts/build_site.py --out dist
+      - run: uv run pip-audit
+      - name: Synth dev, stg and prd with cdk-nag
+        run: |
+          RAAD_ENVIRONMENT=dev RAADWEB_DOMAIN_NAME=dev.raad.example.test uv run cdk synth -q
+          RAAD_ENVIRONMENT=stg RAADWEB_DOMAIN_NAME=stg.raad.example.test uv run cdk synth -q
+          RAAD_ENVIRONMENT=prd RAADWEB_DOMAIN_NAME=raad.example.test uv run cdk synth -q
+      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
